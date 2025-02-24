@@ -15,7 +15,7 @@ const {
   hasMoreToLoad,
 } = useSearchUsers(searchUsersUseCase);
 const searchTerm = ref('');
-const scrollComponent = ref(null);
+const scrollComponent = ref<HTMLInputElement>();
 
 onMounted(() => {
   onSearch(searchTerm.value);
@@ -26,7 +26,7 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
 });
 
-const handleSearchProducts = (event) => {
+const handleSearchProducts = (event: any) => {
   event.preventDefault();
   onSearch(searchTerm.value);
 };
@@ -36,8 +36,9 @@ const handleScroll = () => {
     return;
   }
   const container = scrollComponent.value;
+  const containerBottom = container?.getBoundingClientRect()?.bottom;
 
-  if (container.getBoundingClientRect().bottom > window.innerHeight) {
+  if (containerBottom && containerBottom > window.innerHeight) {
     onLoadMore();
   }
 };
